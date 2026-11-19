@@ -13,7 +13,7 @@ serve de estudo sobre como fazer software de verdade assim.
 > Estado: protótipo jogável (Temporada 0). Espere mudanças grandes e arestas.
 
 *English: SIMBIOSE is a browser-based competitive anime FPS set in a reimagined post-AI Brazil,
-built with Three.js, TypeScript and Colyseus, entirely coded by AI agents. Code is AGPL-3.0-only.
+built with Three.js, TypeScript and Colyseus, entirely coded by AI agents. MIT licensed.
 Docs and in-game text are in Brazilian Portuguese.*
 
 ## Rodar no seu computador
@@ -49,8 +49,6 @@ Veja [`CONTRIBUTING.md`](CONTRIBUTING.md). Falhas de segurança: [`SECURITY.md`]
 
 ## Licença
 
-- **Código:** [GNU AGPL-3.0-only](LICENSE). Quem roda uma versão modificada para outras pessoas
-  jogarem pela rede (mesmo numa sala privada) precisa oferecer a elas o código-fonte dessa versão.
-- **Conteúdo próprio** (documentação, roteiro, capturas): CC BY-NC-SA 4.0.
-- **Assets de terceiros:** CC0 e OFL. Detalhes por pasta em [`LICENSE-ASSETS.md`](LICENSE-ASSETS.md).
-- **Nome e logotipo:** reservados, ver [`TRADEMARKS.md`](TRADEMARKS.md).
+[MIT](LICENSE): use, modifique e distribua como quiser, inclusive em projetos comerciais, mantendo
+o aviso de copyright. Assets de terceiros (CC0 e OFL) mantêm a licença deles; detalhes por pasta
+em [`LICENSE-ASSETS.md`](LICENSE-ASSETS.md).

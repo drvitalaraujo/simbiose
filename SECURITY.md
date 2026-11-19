@@ -21,7 +21,3 @@ segurança", sem detalhes, e aguarde o contato privado. A resposta é feita no t
   **sobrescreva** `X-Real-IP` com o IP real e remova `X-Client-IP`. As cotas por IP dependem
   disso. Exemplo pronto em `deploy/Caddyfile`; detalhes em `deploy/README.md`.
 - Ajuste as cotas (`SIMBIOSE_*` em `.env.example`) ao tamanho da máquina.
-- Versão modificada precisa oferecer o próprio código-fonte a todos que jogam nela pela rede,
-  mesmo em sala privada (AGPL-3.0, seção 13): defina `VITE_SOURCE_URL` no build para o link
-  "código-fonte" do menu, da entrada online e do Modo Live apontar para o seu fork, e gere o
-  build de um commit publicado nele: o `THIRD-PARTY-NOTICES.txt` aponta para essa revisão exata.

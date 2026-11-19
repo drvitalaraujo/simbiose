@@ -150,7 +150,7 @@ export function thirdPartyNotices(sourceUrl: string): Plugin {
       };
       const notices = [
         'SIMBIOSE — avisos de terceiros\n\n' +
-          `Código do jogo: AGPL-3.0-only (texto completo em LICENSE.txt). Código-fonte: ${sourceUrl}\n` +
+          `Código do jogo: MIT (texto completo em LICENSE.txt). Código-fonte: ${sourceUrl}\n` +
           `Código exato deste build: ${revisionUrl(sourceUrl, buildRevision())}\n` +
           'Origem e licença de cada asset externo: LICENSE-ASSETS.md e docs/assets.md no código-fonte.',
         ...[...pkgs.keys()].sort().map((k) => packageText(pkgs.get(k)!)),

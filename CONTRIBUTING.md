@@ -30,8 +30,8 @@ por agentes de IA. Contribuições de gente e de agentes são bem-vindas.
 ## Licença das contribuições (DCO)
 
 Ao contribuir, você declara que tem o direito de enviar o trabalho e concorda que ele seja
-distribuído sob a licença da parte que alterou (código: AGPL-3.0-only; conteúdo: CC BY-NC-SA 4.0;
-ver `LICENSE-ASSETS.md`). A assinatura `Signed-off-by` (gerada por `git commit -s`) confirma o
+distribuído sob a licença MIT do projeto (assets de terceiros seguem a licença deles; ver
+`LICENSE-ASSETS.md`). A assinatura `Signed-off-by` (gerada por `git commit -s`) confirma o
 [Developer Certificate of Origin 1.1](https://developercertificate.org/).
 
 Código gerado por IA é bem-vindo: você continua responsável por ele, e ele não pode copiar

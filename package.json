@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "SIMBIOSE: FPS em anime no navegador",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/drvitalaraujo/simbiose.git"
