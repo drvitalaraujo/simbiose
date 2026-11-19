@@ -1,0 +1,125 @@
+/* Arsenal (arsenal.ts) e mira óptica (aim.ts): botão de detalhes, diálogo das armas, barra de
+   armas 1–4, anel de dispersão, mira holográfica e luneta. Mesma linguagem do HUD (hud.css). */
+
+.arsenal-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 205px;
+  z-index: 12;
+  padding: 6px 14px 5px;
+  color: var(--paper);
+  background: var(--halftone), var(--ink);
+  border: 2px solid var(--ink);
+  border-left: 4px solid var(--cyan);
+  box-shadow: 3px 3px 0 rgba(26, 16, 38, 0.8);
+  font: 800 14px/1.2 var(--f-ui);
+  letter-spacing: 2px;
+  cursor: pointer;
+  transform: skewX(-10deg);
+  transition: background 0.12s, color 0.12s;
+}
+.arsenal-toggle:hover, .arsenal-toggle:focus-visible { outline: none; background: var(--cyan); color: var(--ink); }
+
+.arsenal-dialog {
+  margin: auto;
+  width: min(920px, 92vw);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 0 28px 24px;
+  color: var(--paper);
+  background: var(--halftone), var(--ink);
+  border: 4px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--cyan), 10px 10px 0 4px var(--ink);
+  font: 600 17px/1.45 var(--f-ui);
+}
+.arsenal-dialog::backdrop { background: var(--ink); opacity: 0.82; }
+.arsenal-dialog h1 {
+  margin: 0 -28px 14px;
+  padding: 14px 28px 12px;
+  background: linear-gradient(100deg, var(--deep), var(--ink-soft));
+  border-bottom: 4px solid var(--cyan);
+  font: 400 clamp(22px, 3vw, 34px)/1.1 var(--f-display);
+  color: var(--cyan);
+  -webkit-text-stroke: 5px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0 var(--pink);
+}
+.arsenal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 18px 0; }
+.arsenal-grid button {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  padding: 16px 18px;
+  color: var(--paper);
+  background: rgba(56, 45, 82, 0.6);
+  border: 3px solid var(--ink-soft);
+  border-left: 6px solid var(--lilac);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, background 0.12s;
+}
+.arsenal-grid button:hover, .arsenal-grid button:focus-visible { outline: none; border-color: var(--cyan); transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--pink); }
+.arsenal-grid button.selected { border-color: var(--ink); border-left-color: var(--cyan); background: var(--halftone), rgba(45, 226, 230, 0.16); box-shadow: 5px 5px 0 var(--cyan); }
+.arsenal-grid span { color: var(--yellow); font: 900 14px/1.2 var(--f-ui); text-transform: uppercase; letter-spacing: 3px; }
+.arsenal-grid strong { font: italic 900 28px/1.05 var(--f-ui); }
+.arsenal-grid p { margin: 0; }
+.arsenal-grid small { font-size: 15px; opacity: 0.85; }
+.arsenal-close {
+  padding: 10px 26px;
+  background: var(--cyan);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--pink);
+  font: 400 18px/1.1 var(--f-display);
+  cursor: pointer;
+  transform: skewX(-8deg);
+}
+.arsenal-close:hover, .arsenal-close:focus-visible { outline: none; background: var(--yellow); }
+
+.weapon-spread { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); border: 1px solid var(--paper); opacity: 0.4; border-radius: 50%; pointer-events: none; z-index: 5; }
+.weapon-spread:not(.shotgun) { border-style: dotted; }
+.weapon-spread.moving { border-color: var(--yellow); opacity: 0.7; }
+.weapon-scope { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 4; overflow: hidden; }
+.weapon-scope[hidden], .weapon-spread[hidden] { display: none; }
+body.weapon-scoped #hud { z-index: 5; }
+.scope-glass { width: 78vmin; height: 78vmin; border-radius: 50%; border: 4px solid var(--ink); box-shadow: 0 0 0 150vmax var(--ink), inset 0 0 60px rgba(26, 16, 38, 0.55); position: relative; }
+.scope-glass::before, .scope-glass::after { content: ''; position: absolute; background: var(--ink); }
+.scope-glass::before { top: 50%; left: 0; width: 100%; height: 1px; }
+.scope-glass::after { left: 50%; top: 0; height: 100%; width: 1px; }
+.scope-glass i { position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; background: var(--pink); transform: translate(-50%, -50%); z-index: 1; }
+.scope-glass b { position: absolute; top: 75%; width: 100%; text-align: center; font: 800 13px/1 var(--f-ui); color: var(--cyan); letter-spacing: 4px; }
+@media (max-width: 600px) { .arsenal-grid { grid-template-columns: 1fr; } .arsenal-dialog { padding: 0 16px 16px; } .arsenal-dialog h1 { margin: 0 -16px 12px; } }
+
+/* Barra de armas: capinhas inclinadas (número + tipo); a ativa sobe, ciano */
+.weapon-slots { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 12; }
+.weapon-slots button {
+  padding: 5px 13px 4px;
+  color: var(--paper);
+  background: rgba(26, 16, 38, 0.82);
+  border: 2px solid var(--ink);
+  border-bottom: 3px solid var(--ink-soft);
+  font: 800 14px/1.2 var(--f-ui);
+  letter-spacing: 1px;
+  opacity: 0.75;
+  cursor: pointer;
+  transform: skewX(-12deg);
+  transition: transform 0.12s cubic-bezier(0.2, 1.4, 0.4, 1), background 0.12s, opacity 0.12s;
+}
+.weapon-slots button.active {
+  opacity: 1;
+  color: var(--ink);
+  background: var(--cyan);
+  border-bottom-color: var(--ink);
+  box-shadow: 3px 3px 0 var(--pink);
+  transform: skewX(-12deg) translateY(-4px);
+}
+.weapon-reflex { position: fixed; left: 50%; top: 50%; width: 18px; height: 18px; transform: translate(-50%, -50%); border: 1px solid var(--cyan); border-radius: 50%; pointer-events: none; z-index: 5; box-shadow: 0 0 0 1px var(--ink); }
+.weapon-reflex::after { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 3px; height: 3px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 0 1px var(--ink); }
+.weapon-reflex[hidden] { display: none; }
+@media (max-width: 600px) { .weapon-slots button { padding: 6px 7px; font-size: 12px; } }
+@media (max-height: 780px) { .weapon-slots button { font-size: 12px; padding: 4px 10px 3px; } .arsenal-toggle { bottom: 168px; } }
+
+/* Telas de morte e fim de partida cobrem a ação: barra e botão de armas saem junto */
+body:has(.chud.ending) .weapon-slots, body:has(.chud.ending) .arsenal-toggle,
+body:has(.ch-death.show) .weapon-slots { visibility: hidden; }

@@ -1,0 +1,18 @@
+{
+  email {$ACME_EMAIL}
+}
+{$GAME_DOMAIN} {
+  root * /srv/site
+  encode zstd gzip
+  file_server
+}
+{$API_DOMAIN} {
+  request_body {
+    max_size 64KB
+  }
+  reverse_proxy server:2567 {
+    # O Colyseus prefere x-real-ip. Substitui cabeçalhos que o cliente poderia forjar.
+    header_up X-Real-IP {remote_host}
+    header_up -X-Client-IP
+  }
+}

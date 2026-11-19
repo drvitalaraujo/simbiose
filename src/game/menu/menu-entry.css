@@ -1,0 +1,124 @@
+/* Tela "ENTRAR NA PARTIDA" do online (online-entry.ts) e capinhas de tecla (keys.ts).
+   Mesma linguagem do menu (menu.css): nanquim, retícula, placas inclinadas, sombra rosa. */
+
+/* ---------- Capinhas de tecla ---------- */
+.mn-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  margin: 0 1px;
+  border: 2px solid var(--paper);
+  border-bottom-width: 4px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 800 13px/1 var(--f-ui);
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+.mn-key.mouse { padding: 0 1px; }
+.mn-key svg { width: 15px; height: 15px; }
+.mn-keys { display: inline-flex; align-items: center; gap: 1px; }
+.mn-join { font: 800 12px/1 var(--f-ui); font-style: normal; color: var(--lilac); margin: 0 2px; }
+.mn-help-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 3px; }
+.mn-controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 7px 16px; margin-top: 6px; }
+.mn-ctl { display: flex; align-items: center; gap: 10px; font: 700 15px/1.2 var(--f-ui); }
+.mn-ctl .mn-keys { flex: none; min-width: 70px; }
+
+/* ---------- Tela "ENTRAR NA PARTIDA" ---------- */
+#menu:has(.mn-pause) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    var(--halftone),
+    repeating-linear-gradient(-62deg, transparent 0 60px, rgba(255, 61, 127, 0.05) 60px 66px),
+    radial-gradient(ellipse at 50% 40%, rgba(26, 16, 38, 0.55), rgba(26, 16, 38, 0.9) 75%);
+}
+#menu.hidden:has(.mn-pause) { display: none; }
+#menu:has(.mn-pause) .mn-bg { display: none; }
+.mn-pause {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: min(700px, 100%);
+  margin: auto;
+  padding: 24px clamp(16px, 4vw, 40px);
+}
+.mn-pause .mn-kicker { align-self: flex-start; }
+.mn-pause .mn-logo { --panel: 640px; margin: 0 0 4px; font-size: clamp(48px, 8vh, 78px); }
+.mn-pause .mn-modes { max-width: none; }
+.mn-pause .mn-mode.mode-ffa .t { font-size: clamp(22px, 3.2vh, 32px); white-space: nowrap; }
+
+/* Quadro do mapa com modo e dificuldade */
+.mn-entry {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding: 10px 14px 10px 10px;
+  background: var(--halftone), rgba(26, 16, 38, 0.92);
+  border: 3px solid var(--ink);
+  border-top: 5px solid var(--yellow);
+  box-shadow: 8px 8px 0 rgba(255, 61, 127, 0.7), 8px 8px 0 3px var(--ink);
+  animation: mn-in 0.4s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+.mn-entry-thumb {
+  flex: none;
+  width: 230px;
+  aspect-ratio: 16 / 9;
+  background: var(--deep) center / cover no-repeat;
+  border: 3px solid var(--ink);
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+}
+.mn-entry-info { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-width: 0; }
+.mn-entry-map {
+  font: 400 clamp(24px, 3.8vh, 34px)/1.05 var(--f-display);
+  color: var(--paper);
+  -webkit-text-stroke: 5px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0 var(--pink);
+}
+.mn-entry-where { font: 800 17px/1.2 var(--f-ui); color: var(--yellow); letter-spacing: 1px; }
+.mn-entry-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+.mn-chip-cap { font: 800 12px/1 var(--f-ui); letter-spacing: 3px; color: var(--lilac); }
+.mn-chip-on {
+  padding: 3px 10px;
+  margin-right: 8px;
+  background: var(--cyan);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font: italic 900 15px/1.2 var(--f-ui);
+  letter-spacing: 0.5px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: skewX(-10deg);
+}
+.mn-pause .mn-help { margin-top: 6px; padding: 12px 14px; background: rgba(26, 16, 38, 0.88); border: 3px solid var(--ink); border-left: 6px solid var(--lilac); }
+
+@media (max-width: 560px) {
+  .mn-entry { flex-direction: column; }
+  .mn-entry-thumb { width: 100%; }
+}
+@media (max-height: 760px) {
+  .mn-pause { gap: 8px; padding-top: 12px; }
+  .mn-pause .mn-logo { font-size: 52px; }
+  .mn-controls { gap: 4px 14px; }
+  .mn-pause .mn-help { display: flex; }
+}
+
+/* Link discreto para o código-fonte (AGPL): menu e entrada online (source-link.ts) */
+.mn-source {
+  align-self: flex-start;
+  font: 700 12px/1.3 var(--f-ui);
+  letter-spacing: 2px;
+  color: var(--lilac);
+  text-decoration: none;
+  opacity: 0.75;
+}
+.mn-source:hover,
+.mn-source:focus-visible { color: var(--cyan); opacity: 1; text-decoration: underline; }
+.mn-pause .mn-source { align-self: center; }

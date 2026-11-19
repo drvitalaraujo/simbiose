@@ -1,0 +1,12 @@
+The Free Firearm Sound Library — CC0 / No Rights Reserved
+
+Created and recorded by Ben Jaszczak, Brian Nelson, Kevin Heras, Matthew Nanney.
+Source: https://opengameart.org/node/21826
+Archive: https://opengameart.org/sites/default/files/Prepared%20SFX%20Library.7z
+Retrieved: 2026-10-03
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+The source page identifies this library as CC0 and states that it may be used
+without royalty or credit for personal or professional applications.
+This is a provenance record created by SIMBIOSE, not an original license file
+from the archive. See sources.json for the exact recordings and edits.

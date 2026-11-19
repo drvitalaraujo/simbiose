@@ -1,0 +1,10 @@
+# Use junto do compose principal: desliga o Caddy e publica só no loopback do VPS.
+services:
+  server:
+    ports: ["127.0.0.1:2567:2567"]
+  caddy:
+    profiles: [proxy-proprio]
+    environment:
+      GAME_DOMAIN: "${GAME_DOMAIN:-localhost}"
+      API_DOMAIN: "${API_DOMAIN:-localhost}"
+      ACME_EMAIL: "${ACME_EMAIL:-local@example.com}"

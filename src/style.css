@@ -1,0 +1,412 @@
+/* Fontes da interface, empacotadas em public/fonts (OFL 1.1, origem em docs/assets.md):
+   Dela Gothic One = títulos de cartaz; Barlow Condensed = texto, números e rótulos. */
+@font-face {
+  font-family: 'Dela Gothic One';
+  src: url('/fonts/dela-gothic-one-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-latin-600-normal.woff2') format('woff2');
+  font-weight: 500 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-latin-800-normal.woff2') format('woff2');
+  font-weight: 800 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-latin-800-italic.woff2') format('woff2');
+  font-weight: 500 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('/fonts/barlow-condensed-latin-900-italic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Espelho da PALETTE (src/game/toon.ts) */
+  --pink: #ff3d7f;
+  --cyan: #2de2e6;
+  --yellow: #ffd23f;
+  --ink: #1a1026;
+  --paper: #f4ecff;
+  --lilac: #b8a9d9; /* concrete */
+  --violet: #7d6ea8; /* concreteDark */
+  --purple: #9d7fe0; /* lilac */
+  --deep: #3d2a8a; /* skyDeep */
+  --dusk: #6a4f9e;
+  --ink-soft: #382d52; /* inkSoft */
+  --orange: #ff8a5b;
+  --magenta: #d95ba8;
+  /* Tipos */
+  --f-display: 'Dela Gothic One', 'Arial Black', 'Segoe UI', sans-serif;
+  --f-ui: 'Barlow Condensed', 'Arial Narrow', 'Segoe UI', system-ui, sans-serif;
+  /* Retícula de mangá (pontos) e nanquim */
+  --halftone: radial-gradient(circle, rgba(244, 236, 255, 0.09) 1.1px, transparent 1.5px) 0 0 / 8px 8px;
+  --ink-shadow: 4px 4px 0 var(--ink);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  font-family: var(--f-ui);
+  font-weight: 800;
+  user-select: none;
+}
+
+#game { display: block; width: 100vw; height: 100vh; }
+
+#hud { position: fixed; inset: 0; pointer-events: none; }
+
+#crosshair, #hitmarker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+/* Mira: ponto + quatro traços curtos, papel com contorno de nanquim (lê em qualquer fundo) */
+#crosshair {
+  --c: var(--paper);
+  width: 26px;
+  height: 26px;
+  background:
+    radial-gradient(circle, var(--c) 0 1.9px, transparent 2.4px),
+    linear-gradient(var(--c), var(--c)) 50% 0 / 2px 7px no-repeat,
+    linear-gradient(var(--c), var(--c)) 50% 100% / 2px 7px no-repeat,
+    linear-gradient(var(--c), var(--c)) 0 50% / 7px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) 100% 50% / 7px 2px no-repeat;
+  filter: drop-shadow(0 0 0.8px var(--ink)) drop-shadow(0 0 0.8px var(--ink));
+  transition: opacity 0.08s;
+}
+/* Acertou: a mira abre um pouco e volta (o marcador do juice dispara junto) */
+#hud:has(#hitmarker.show) #crosshair { animation: xhair-kick 0.16s ease-out; }
+@keyframes xhair-kick { 40% { transform: translate(-50%, -50%) scale(1.25); } }
+#hitmarker {
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  background:
+    linear-gradient(45deg, transparent 45%, var(--pink) 45% 55%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, var(--pink) 45% 55%, transparent 55%);
+  -webkit-mask: radial-gradient(circle, transparent 7px, #000 7.5px);
+  mask: radial-gradient(circle, transparent 7px, #000 7.5px);
+  filter: drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 1px var(--ink));
+}
+#hitmarker.show { animation: hit 0.18s ease-out; }
+@keyframes hit {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1.45) rotate(8deg); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Anel de progresso do hack em volta da mira */
+#hack-ring {
+  --p: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0;
+  background: conic-gradient(var(--cyan) calc(var(--p) * 360deg), rgba(244, 236, 255, 0.25) 0);
+  -webkit-mask: radial-gradient(circle, transparent 24px, #000 25px);
+  mask: radial-gradient(circle, transparent 24px, #000 25px);
+  filter: drop-shadow(0 0 1px var(--ink)) drop-shadow(0 0 6px rgba(45, 226, 230, 0.6));
+  transition: opacity 0.1s;
+}
+#hack-ring.show { opacity: 1; animation: pulse-ring 0.6s ease-in-out infinite alternate; }
+@keyframes pulse-ring { to { transform: translate(-50%, -50%) scale(1.12); } }
+#hack-label {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 46px);
+  transform: translateX(-50%) skewX(-10deg);
+  padding: 3px 12px;
+  background: var(--ink);
+  border-left: 4px solid var(--cyan);
+  color: var(--cyan);
+  font: 800 15px/1.2 var(--f-ui);
+  letter-spacing: 1.5px;
+  opacity: 0;
+  white-space: nowrap;
+}
+#hack-label b { color: var(--yellow); }
+#hack-label.show { opacity: 1; }
+
+#allies {
+  position: absolute;
+  left: 24px;
+  bottom: 74px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#allies .slot {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--ink);
+  background: rgba(26, 16, 38, 0.5);
+  transform: skewX(-14deg);
+}
+#allies .slot.on { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+#allies em {
+  font: italic 900 16px/1 var(--f-ui);
+  letter-spacing: 1px;
+  color: var(--paper);
+  -webkit-text-stroke: 3px var(--ink);
+  paint-order: stroke fill;
+}
+
+/* Linhas de velocidade de anime: aparecem correndo e no hack */
+#speedlines {
+  --s: 0;
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  opacity: var(--s);
+  background: repeating-conic-gradient(from 0deg, rgba(244, 236, 255, 0.55) 0deg 0.6deg, transparent 0.6deg 7deg);
+  -webkit-mask: radial-gradient(circle, transparent 38%, #000 75%);
+  mask: radial-gradient(circle, transparent 38%, #000 75%);
+}
+
+/* Contadores do Treino: placas inclinadas de nanquim */
+#score, #wave {
+  position: absolute;
+  top: 20px;
+  padding: 4px 16px 5px;
+  background: var(--ink);
+  font: italic 900 24px/1 var(--f-ui);
+  letter-spacing: 1px;
+  box-shadow: var(--ink-shadow);
+  transform: skewX(-12deg);
+}
+#score { left: 24px; color: var(--yellow); border-left: 5px solid var(--yellow); }
+#wave { right: 24px; color: var(--cyan); border-right: 5px solid var(--cyan); }
+#score span, #wave span { font-size: 30px; color: var(--paper); }
+
+/* Vida do Treino: mesmo desenho da vida do competitivo (hud.css) */
+#hp {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  width: min(340px, 60vw);
+  height: 30px;
+  border: 3px solid var(--ink);
+  background: var(--halftone), rgba(26, 16, 38, 0.75);
+  box-shadow: var(--ink-shadow);
+  transform: skewX(-14deg);
+  overflow: hidden;
+}
+#hp-fill {
+  height: 100%;
+  width: 100%;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 calc(10% - 3px), var(--ink) calc(10% - 3px) 10%),
+    linear-gradient(180deg, var(--paper) 0 18%, var(--cyan) 18%);
+  transition: width 0.15s;
+}
+#hp-fill.low { background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 3px), var(--ink) calc(10% - 3px) 10%), var(--pink); animation: blink 0.5s steps(2) infinite; }
+@keyframes blink { 50% { filter: brightness(1.6); } }
+#hp span {
+  position: absolute;
+  left: 12px;
+  top: 2px;
+  font: italic 900 18px/1.3 var(--f-ui);
+  letter-spacing: 2px;
+  color: var(--paper);
+  -webkit-text-stroke: 3px var(--ink);
+  paint-order: stroke fill;
+  transform: skewX(14deg);
+}
+
+#boss {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, 80vw);
+  text-align: center;
+  display: none;
+}
+#boss.show { display: block; }
+#boss-label {
+  font: 400 20px/1.2 var(--f-display);
+  color: var(--pink);
+  -webkit-text-stroke: 4px var(--ink);
+  paint-order: stroke fill;
+  margin-bottom: 6px;
+}
+#boss-track {
+  height: 18px;
+  border: 3px solid var(--ink);
+  background: var(--halftone), rgba(26, 16, 38, 0.7);
+  transform: skewX(-14deg);
+  box-shadow: var(--ink-shadow);
+}
+#boss-fill { height: 100%; background: linear-gradient(180deg, var(--paper) 0 20%, var(--pink) 20%); transition: width 0.15s; }
+#boss.pane #boss-label { color: var(--cyan); animation: blink 0.3s steps(2) infinite; }
+#boss.pane #boss-fill { background: linear-gradient(180deg, var(--paper) 0 20%, var(--cyan) 20%); }
+
+/* Legenda: balão de fala com o nome de quem fala numa etiqueta */
+#subtitle {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  transform: translateX(-50%);
+  max-width: min(90vw, 680px);
+  padding: 9px 18px 10px;
+  background: rgba(26, 16, 38, 0.9);
+  border: 3px solid var(--ink);
+  border-left: 6px solid var(--cyan);
+  box-shadow: var(--ink-shadow);
+  color: var(--paper);
+  font: 600 21px/1.3 var(--f-ui);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#subtitle b { color: var(--cyan); font-weight: 900; font-style: italic; letter-spacing: 0.5px; }
+#subtitle[data-speaker='otimiza'] { border-left-color: var(--pink); }
+#subtitle[data-speaker='otimiza'] b { color: var(--pink); }
+#subtitle[data-speaker='kaia'] { border-left-color: var(--yellow); }
+#subtitle[data-speaker='kaia'] b { color: var(--yellow); }
+#subtitle.show { opacity: 1; }
+
+/* Faixa de onda com a fala da OTIMIZA */
+#banner {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  opacity: 0;
+  width: min(90vw, 760px);
+}
+#banner.show { animation: banner 3.2s ease-out forwards; }
+@keyframes banner {
+  0% { opacity: 0; transform: translateX(-50%) scale(1.6); }
+  8% { opacity: 1; transform: translateX(-50%) scale(1); }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+#banner-title {
+  font: 400 clamp(46px, 8vh, 76px)/1.05 var(--f-display);
+  color: var(--yellow);
+  -webkit-text-stroke: 7px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0 var(--pink);
+  transform: rotate(-3deg);
+}
+#banner-line {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 16px;
+  background: var(--pink);
+  border: 3px solid var(--ink);
+  box-shadow: var(--ink-shadow);
+  color: var(--paper);
+  font: 800 20px/1.25 var(--f-ui);
+  transform: skewX(-8deg);
+}
+
+/* Dano: borda rosa pulsando */
+#damage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 120px 40px var(--pink);
+}
+#damage.show { animation: damage 0.4s ease-out; }
+@keyframes damage { from { opacity: 0.9; } to { opacity: 0; } }
+
+/* Morte do Treino: faixa inclinada atravessando a tela */
+#death {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px;
+  text-align: center;
+  background: var(--halftone), radial-gradient(ellipse at center, rgba(26, 16, 38, 0.55) 25%, rgba(26, 16, 38, 0.92) 100%);
+  color: var(--paper);
+}
+#death.show { display: flex; }
+#death h2 {
+  padding: 18px 6vw;
+  background: var(--ink);
+  border-top: 4px solid var(--pink);
+  border-bottom: 4px solid var(--pink);
+  font: 400 clamp(36px, 7vw, 80px)/1.1 var(--f-display);
+  color: var(--pink);
+  text-shadow: 5px 5px 0 var(--yellow);
+  transform: rotate(-3deg);
+}
+#death-stats { font: italic 900 28px/1.2 var(--f-ui); color: var(--yellow); letter-spacing: 1px; }
+#death .hint { font: 600 18px/1.4 var(--f-ui); opacity: 0.9; }
+#death .hint:last-child { padding: 6px 18px; background: var(--yellow); color: var(--ink); font-weight: 900; letter-spacing: 2px; box-shadow: 4px 4px 0 var(--pink); transform: skewX(-10deg); opacity: 1; }
+
+/* Acentos anime laterais: centro da mira e alvo ficam livres durante a rajada. */
+#fx-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.onoma {
+  position: absolute;
+  max-width: 24vw;
+  font: 400 clamp(calc(14px * var(--hk, 1)), 2.8vw, calc(32px * var(--hk, 1)))/1 var(--f-display);
+  text-align: center;
+  overflow-wrap: anywhere;
+  color: var(--yellow);
+  -webkit-text-stroke: calc(3px * var(--hk, 1)) var(--ink);
+  paint-order: stroke fill;
+  animation: onoma 0.28s ease-out forwards;
+}
+.onoma.big, .onoma.hack { font-size: clamp(calc(18px * var(--hk, 1)), 3.6vw, calc(42px * var(--hk, 1))); animation-duration: 0.42s; }
+.onoma.big { color: var(--pink); }
+.onoma.glitch { color: var(--cyan); text-shadow: 2px 0 0 var(--pink), -2px 0 0 var(--yellow); }
+.onoma.hack { color: var(--cyan); text-shadow: 2px 2px 0 var(--yellow); }
+@keyframes onoma {
+  0% { transform: translate(-50%, -50%) scale(0.75); opacity: 0.8; }
+  25% { transform: translate(-50%, -60%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -90%) scale(0.95); opacity: 0; }
+}
+
+/* Impact frame de anime: a tela vira preto e branco invertido por 2-3 quadros */
+#impact-frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+  backdrop-filter: grayscale(1) invert(1) contrast(6);
+}
+#impact-frame.on { display: block; }
+
+/* Movimento reduzido (Configurações): a interface também para de pulsar e tremer */
+body.reduce-motion #hud *, body.reduce-motion .chud *, body.reduce-motion #menu * { animation-iteration-count: 1 !important; }
+body.reduce-motion #speedlines { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  #hack-ring.show, #hp-fill.low { animation: none; }
+}
+
+/* Menu inicial: src/game/menu/menu.css · HUD competitivo: src/game/hud/hud.css */

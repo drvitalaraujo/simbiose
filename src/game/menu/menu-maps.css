@@ -1,0 +1,161 @@
+/* ---------- Coluna da direita: mapa em destaque, cartões, bots, treino, controles ---------- */
+.mn-right {
+  position: absolute;
+  right: clamp(16px, 3vw, 56px);
+  bottom: clamp(52px, 7.4vh, 84px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(500px, calc(100vw - var(--panel) - 170px));
+  animation: mn-right-in 0.5s 0.1s cubic-bezier(0.2, 1.2, 0.4, 1) backwards;
+}
+.mn-box {
+  position: relative;
+  padding: 12px 14px 16px;
+  background: var(--halftone), rgba(26, 16, 38, 0.9);
+  border: 3px solid var(--ink);
+  border-top: 5px solid var(--lilac);
+  box-shadow: 8px 8px 0 rgba(255, 61, 127, 0.6), 8px 8px 0 3px var(--ink);
+}
+.mn-cap-gap { margin-top: 14px; }
+
+/* Destaque do mapa escolhido: quadro de mangá com corte inclinado */
+.mn-feature {
+  position: relative;
+  aspect-ratio: 16 / 7.6;
+  margin-bottom: 10px;
+  border: 3px solid var(--ink);
+  background: var(--deep);
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 82%, 93% 100%, 0 100%);
+}
+.mn-feature-art { position: absolute; inset: -6%; transform: translate(calc(var(--mx) * -8px), calc(var(--my) * -5px)); }
+.mn-feature-art .mn-preview { width: 100%; height: 100%; aspect-ratio: auto; margin: 0; object-fit: cover; }
+.mn-feature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(26, 16, 38, 0.92) 0, rgba(26, 16, 38, 0.35) 38%, transparent 62%),
+    radial-gradient(circle, rgba(26, 16, 38, 0.28) 1px, transparent 1.4px) 0 0 / 5px 5px;
+  pointer-events: none;
+}
+.mn-feature.swap .mn-feature-art { animation: mn-wipe 0.38s cubic-bezier(0.2, 1, 0.3, 1); }
+.mn-feature.swap .mn-feature-tx { animation: mn-row-in 0.4s 0.06s cubic-bezier(0.2, 1.3, 0.4, 1) backwards; }
+@keyframes mn-wipe { from { clip-path: polygon(0 0, 0 0, -12% 100%, 0 100%); } to { clip-path: polygon(0 0, 112% 0, 100% 100%, 0 100%); } }
+.mn-feature-tx { position: absolute; left: 14px; right: 40px; bottom: 10px; z-index: 1; display: flex; flex-direction: column; }
+.mn-feature-tx .n {
+  font: 400 clamp(24px, 3.6vh, 36px)/1.05 var(--f-display);
+  color: var(--paper);
+  -webkit-text-stroke: 5px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0 var(--pink);
+}
+.mn-feature-tx .w { font: 800 16px/1.2 var(--f-ui); color: var(--yellow); letter-spacing: 1px; -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; }
+.mn-feature-tx .g { font: 600 14px/1.25 var(--f-ui); color: var(--paper); opacity: 0.9; }
+.mn-feature[data-map='aleatorio'] .mn-feature-tx .n { color: var(--yellow); }
+.mn-sticker {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 2px 10px;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font: 900 13px/18px var(--f-ui);
+  letter-spacing: 2px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-4deg);
+}
+
+/* Cartões de escolha: quatro miniaturas lado a lado */
+.mn-maps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.mn-map {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 0 5px;
+  border: 3px solid var(--ink-soft);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.14s cubic-bezier(0.2, 1.4, 0.4, 1), border-color 0.12s, box-shadow 0.12s;
+}
+.mn-preview { display: block; width: 100%; aspect-ratio: 16 / 9; background: rgba(61, 42, 138, 0.55); margin-bottom: 4px; }
+img.mn-preview { object-fit: cover; }
+.mn-map .mn-preview { transition: transform 0.2s, filter 0.2s; filter: saturate(0.7) brightness(0.8); }
+.mn-map .n { padding: 0 5px; font: italic 900 clamp(12px, 1.45vh, 15px)/1.1 var(--f-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mn-map:hover, .mn-map:focus-visible { outline: none; border-color: var(--cyan); transform: translateY(-3px); }
+.mn-map:hover .mn-preview, .mn-map:focus-visible .mn-preview { transform: scale(1.08); filter: none; }
+.mn-map.on { border-color: var(--yellow); transform: translateY(-4px); box-shadow: 4px 4px 0 var(--pink); }
+.mn-map.on .mn-preview { filter: none; }
+.mn-map.on .n { color: var(--yellow); }
+.mn-map:focus-visible { outline: 3px solid var(--paper); outline-offset: 3px; }
+.mn-map.on::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 14px;
+  height: 14px;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  clip-path: polygon(0 55%, 35% 90%, 100% 15%, 85% 0, 35% 60%, 15% 40%);
+}
+.mn-map.map-aleatorio .n { color: var(--yellow); }
+
+/* Segmentos (dificuldade dos bots e qualidade gráfica) */
+.mn-seg { display: flex; gap: 8px; }
+.mn-seg-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: 3px solid var(--ink-soft);
+  background: rgba(56, 45, 82, 0.5);
+  color: var(--paper);
+  font: italic 900 16px/1.1 var(--f-ui);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transform: skewX(-10deg);
+  transition: background 0.12s, border-color 0.12s, transform 0.14s;
+}
+.mn-seg-btn:hover, .mn-seg-btn:focus-visible { outline: none; border-color: var(--cyan); }
+.mn-seg-btn.on { border-color: var(--ink); background: var(--cyan); color: var(--ink); box-shadow: 4px 4px 0 var(--pink); transform: skewX(-10deg) translateY(-2px); }
+.mn-seg-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 3px; }
+
+/* Nomes completos nos notebooks mais estreitos, sem reduzir a fonte. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .mn-map .n { white-space: normal; min-height: 2.2em; }
+}
+
+/* Faixa "Treino é no Bairro" */
+.mn-training {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px 6px 6px;
+  background: rgba(26, 16, 38, 0.88);
+  border: 3px solid var(--ink);
+  border-left: 6px solid var(--cyan);
+  box-shadow: var(--ink-shadow);
+}
+.mn-training .mn-preview { width: 84px; flex: none; margin: 0; border: 2px solid var(--ink-soft); }
+.mn-training .tx { display: flex; flex-direction: column; gap: 1px; font: 600 14px/1.3 var(--f-ui); color: var(--lilac); }
+.mn-training b { font: italic 900 17px/1.1 var(--f-ui); color: var(--cyan); letter-spacing: 1px; }
+
+.mn-help {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 12px 9px;
+  background: rgba(26, 16, 38, 0.78);
+  font: 600 14px/1.4 var(--f-ui);
+  color: var(--paper);
+}
+.mn-help b { font: 800 12px/1 var(--f-ui); letter-spacing: 4px; color: var(--lilac); }
+

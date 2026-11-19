@@ -1,0 +1,41 @@
+{
+  "name": "simbiose",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SIMBIOSE: FPS em anime no navegador",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drvitalaraujo/simbiose.git"
+  },
+  "homepage": "https://github.com/drvitalaraujo/simbiose",
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "server": "tsx server/index.ts",
+    "check:server": "tsc --noEmit -p server",
+    "check": "tsc --noEmit && tsc --noEmit -p server && vitest run && vite build"
+  },
+  "dependencies": {
+    "@colyseus/core": "0.18.18",
+    "@colyseus/schema": "5.0.35",
+    "@colyseus/sdk": "0.18.4",
+    "@colyseus/ws-transport": "0.18.4",
+    "qrcode-generator": "2.0.4",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.4",
+    "@types/three": "^0.186.0",
+    "tsx": "4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}

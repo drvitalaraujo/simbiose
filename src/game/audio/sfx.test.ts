@@ -1,0 +1,34 @@
+import { expect, it, vi } from 'vitest';
+import { Sfx } from './sfx';
+import { voiceToSteal } from './policy';
+
+it('passos remotos têm posição, prioridade e presença acima dos próprios passos', () => {
+  const sfx = new Sfx();
+  const play = vi.spyOn(sfx.mixer, 'play').mockImplementation(() => {});
+  const motion = { position: { x: 0, y: 1, z: 0 }, grounded: true, sliding: false, crouch: 0, alive: true, vy: 0 };
+  sfx.movement('enemy', motion, true);
+  sfx.movement('enemy', { ...motion, position: { x: 2.2, y: 1, z: 0 } }, true);
+  expect(play).toHaveBeenCalledTimes(1);
+  const [key, layers, options] = play.mock.calls[0];
+  expect(key).toBe('feet:enemy');
+  expect(options).toMatchObject({ priority: 7, duck: 0, reserveHrtf: true, range: 24, position: { x: 2.2, z: 0 } });
+  expect(options?.position?.y).toBeCloseTo(0.45);
+  sfx.movement('local', motion);
+  sfx.movement('local', { ...motion, position: { x: 2.2, y: 1, z: 0 } });
+  expect(layers[0].gain).toBeGreaterThan(play.mock.calls[1][1][0].gain * 3);
+  play.mockClear();
+  sfx.movement('enemy', { ...motion, walking: true, position: { x: 4.4, y: 1, z: 0 } }, true);
+  expect(play).not.toHaveBeenCalled();
+  sfx.shot('smg', { x: 8, y: 1, z: 0 }, 'enemy');
+  const shotPriority = play.mock.calls[0][2]!.priority!;
+  expect(voiceToSteal([{ priority: shotPriority, started: 0 }], options!.priority!, 1)).toBe(-2);
+  play.mockClear();
+  sfx.movement('ally', motion, true, true);
+  sfx.movement('ally', { ...motion, position: { x: 2.2, y: 1, z: 0 } }, true, true);
+  expect(play.mock.calls[0][2]).toMatchObject({ priority: 5, duck: 0, reserveHrtf: false });
+  play.mockClear();
+  sfx.movement('landing', { ...motion, grounded: false, vy: -12 }, true);
+  sfx.movement('landing', motion, true);
+  expect(play.mock.calls[0][2]).toMatchObject({ range: 28, priority: 7, duck: 0 });
+  expect(play.mock.calls[0][1]).toHaveLength(2);
+});

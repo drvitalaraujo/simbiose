@@ -1,0 +1,119 @@
+/* Teste de Admissão (tutorial.ts / tutorial-ui.ts). Cores da paleta (variáveis de style.css). */
+.tut { --ui: var(--f-ui); position: fixed; inset: 0; z-index: 9; pointer-events: none; color: var(--paper); }
+/* O convite final solta o mouse e o menu (#menu, z-index 20) reabre: a raiz sobe por cima dele */
+.tut:has(.tut-final.show) { z-index: 25; }
+
+.tut-card {
+  position: absolute;
+  top: 78px;
+  left: 24px;
+  width: min(360px, calc(100vw - 48px));
+  padding: 12px 14px 10px;
+  background: rgba(26, 16, 38, 0.86);
+  border-left: 5px solid var(--yellow);
+  box-shadow: 6px 6px 0 rgba(255, 61, 127, 0.55);
+  transform: skewX(-3deg);
+}
+.tut-card > * { transform: skewX(3deg); }
+.tut-card.in { animation: tut-in 0.45s cubic-bezier(0.2, 1.4, 0.4, 1); }
+.tut-card.shake { animation: tut-shake 0.35s; }
+.tut-card.gone { display: none; }
+.tut-head { display: flex; justify-content: space-between; align-items: center; }
+.tut-kicker { font: 800 13px/1 var(--ui); letter-spacing: 3px; color: var(--yellow); }
+.tut-count { font: 800 15px/1 var(--ui); color: var(--lilac, #b8a9d9); font-variant-numeric: tabular-nums; }
+.tut-title { display: block; margin: 6px 0 6px; font: italic 900 26px/1 var(--f-ui); letter-spacing: 0.5px; }
+.tut-say { display: flex; gap: 6px; align-items: baseline; }
+.tut-speaker { flex: none; padding: 1px 6px; background: var(--yellow); color: var(--ink); font: 800 14px/16px var(--ui); letter-spacing: 1px; }
+.tut-speaker.bit { background: var(--cyan); }
+.tut-line { margin: 0; font: 600 16px/1.4 var(--ui); }
+.tut-hints { display: flex; flex-direction: column; gap: 5px; margin: 10px 0 8px; }
+.tut-hint { display: flex; align-items: center; gap: 3px; font: 700 15px/1.2 var(--ui); }
+.tut-hint em { margin-left: 6px; font-style: normal; color: var(--paper); opacity: 0.9; }
+.tut-bar { height: 6px; background: rgba(184, 169, 217, 0.25); border: 1px solid #000; }
+.tut-fill { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--yellow)); transition: width 0.2s; }
+.tut-retort { min-height: 0; margin: 6px 0 0; font: 800 16px/1.3 var(--ui); color: var(--pink); }
+.tut-retort:empty { display: none; }
+.tut-skip { margin: 8px 0 0; font: 600 14px/1.6 var(--ui); opacity: 0.7; }
+
+/* Teclas (mesmo desenho do menu: menu/keys.ts) */
+.tut .mn-key {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 5px; margin: 0 1px;
+  border: 2px solid var(--paper); border-bottom-width: 3px; border-radius: 4px;
+  background: var(--ink); color: var(--paper); font: 800 14px/1 var(--ui); vertical-align: middle;
+}
+.tut .mn-key.mouse { padding: 0 1px; }
+.tut .mn-key svg { width: 15px; height: 15px; }
+
+/* Carimbo APROVADO! */
+.tut-stamp {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  text-align: center;
+}
+.tut-stamp.show { display: flex; animation: tut-stamp 1.8s ease-out forwards; }
+.tut-stamp b {
+  padding: 4px 22px;
+  border: 6px solid var(--ink);
+  background: var(--yellow);
+  color: var(--ink);
+  font: 400 clamp(40px, 8.4vh, 80px)/1.05 var(--f-display);
+  letter-spacing: 2px;
+  box-shadow: 8px 8px 0 var(--pink);
+  text-shadow: 3px 3px 0 var(--paper);
+}
+.tut-praise { max-width: min(520px, 90vw); padding: 4px 12px; background: var(--ink); font: 800 17px/1.35 var(--ui); }
+
+/* Convite final */
+.tut-final {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 210, 63, 0.18), rgba(26, 16, 38, 0.82) 60%);
+  pointer-events: auto;
+}
+.tut-final.show { display: flex; animation: tut-fade 0.3s ease-out; }
+.tut-final-card {
+  width: min(520px, 100%);
+  padding: 20px 24px 22px;
+  background: var(--ink);
+  border-top: 5px solid var(--yellow);
+  box-shadow: 10px 10px 0 var(--pink);
+  text-align: center;
+  animation: tut-in 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.tut-final-card h2 { margin: 8px 0; font: 400 clamp(36px, 7vh, 60px)/1.05 var(--f-display); color: var(--yellow); text-shadow: -3px 0 var(--cyan), 3px 0 var(--pink); }
+.tut-final-card h3 { margin: 14px 0 12px; font: italic 900 26px/1 var(--f-ui); }
+.tut-final-line { font: 600 17px/1.4 var(--ui); }
+.tut-final-line b { color: var(--yellow); }
+.tut-final-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.tut-btn { padding: 12px 20px; border: 3px solid var(--ink); font: italic 900 21px/1 var(--f-ui); cursor: pointer; transform: skewX(-6deg); }
+.tut-go { background: var(--cyan); color: var(--ink); box-shadow: 5px 5px 0 var(--pink); }
+.tut-stay { background: transparent; border-color: var(--paper); color: var(--paper); }
+.tut-btn:hover, .tut-btn:focus-visible { outline: none; background: var(--paper); color: var(--ink); }
+
+@keyframes tut-in { from { opacity: 0; transform: translateX(-30px) skewX(-10deg); } }
+@keyframes tut-fade { from { opacity: 0; } }
+@keyframes tut-shake { 20% { translate: -8px 0; } 40% { translate: 8px 0; } 60% { translate: -5px 0; } 80% { translate: 4px 0; } }
+@keyframes tut-stamp {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(2.6); }
+  12% { opacity: 1; transform: translate(-50%, -50%) rotate(-8deg) scale(0.92); }
+  20% { transform: translate(-50%, -50%) rotate(-8deg) scale(1.05); }
+  28%, 80% { opacity: 1; transform: translate(-50%, -50%) rotate(-8deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tut-card.in, .tut-card.shake, .tut-stamp.show, .tut-final-card { animation: none; }
+}
+/* Com o menu aberto, o cartão do tutorial some (o convite final fica por cima de tudo) */
+body:has(#menu:not(.hidden)) .tut-card, body:has(#menu:not(.hidden)) .tut-stamp { visibility: hidden; }

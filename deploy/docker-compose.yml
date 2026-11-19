@@ -1,0 +1,48 @@
+name: simbiose
+services:
+  server:
+    build: { context: .., dockerfile: Dockerfile }
+    image: simbiose-server:${TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "2567"
+      SIMBIOSE_DEBUG: "0"
+      SIMBIOSE_MAX_ROOMS: "${SIMBIOSE_MAX_ROOMS:-40}"
+      SIMBIOSE_ROOMS_PER_IP: "${SIMBIOSE_ROOMS_PER_IP:-3}"
+      SIMBIOSE_CONNECTIONS_PER_IP: "${SIMBIOSE_CONNECTIONS_PER_IP:-8}"
+      SIMBIOSE_MESSAGES_PER_SECOND: "${SIMBIOSE_MESSAGES_PER_SECOND:-150}"
+      SIMBIOSE_MAX_PAYLOAD: "${SIMBIOSE_MAX_PAYLOAD:-1024}"
+    cpus: 1.5
+    mem_limit: 1g
+    pids_limit: 256
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      GAME_DOMAIN: "${GAME_DOMAIN:-localhost}"
+      API_DOMAIN: "${API_DOMAIN:-api.localhost}"
+      ACME_EMAIL: "${ACME_EMAIL:-local@example.com}"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../dist:/srv/site:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    cpus: 0.5
+    mem_limit: 256m
+    depends_on:
+      server: { condition: service_healthy }
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+volumes:
+  caddy_data:
+  caddy_config:

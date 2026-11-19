@@ -1,0 +1,114 @@
+[
+  {
+    "file": "rifle.ogg",
+    "source": "D_32P.wav",
+    "folder": "AR-15",
+    "onset": 0.700719,
+    "duration": 0.3,
+    "targetPeak": 0.8
+  },
+  {
+    "file": "smg.ogg",
+    "source": "G_31P.wav",
+    "folder": "Carl Gustav M45",
+    "onset": 0.307295,
+    "duration": 0.2,
+    "targetPeak": 0.8
+  },
+  {
+    "file": "sniper.ogg",
+    "source": "W_29P.wav",
+    "folder": "Tikka",
+    "onset": 0.574347,
+    "duration": 0.65,
+    "targetPeak": 0.8
+  },
+  {
+    "file": "shotgun.ogg",
+    "source": "O_21P.wav",
+    "folder": "Nova",
+    "onset": 0.428156,
+    "duration": 0.45,
+    "targetPeak": 0.8
+  },
+  {
+    "file": "step-0.ogg",
+    "source": "footstep_concrete_000.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.24,
+    "targetPeak": 0.65
+  },
+  {
+    "file": "step-1.ogg",
+    "source": "footstep_concrete_001.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.24,
+    "targetPeak": 0.65
+  },
+  {
+    "file": "step-2.ogg",
+    "source": "footstep_concrete_002.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.24,
+    "targetPeak": 0.65
+  },
+  {
+    "file": "step-3.ogg",
+    "source": "footstep_concrete_003.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.24,
+    "targetPeak": 0.65
+  },
+  {
+    "file": "mag-out.ogg",
+    "source": "impactMetal_light_000.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.12,
+    "targetPeak": 0.7
+  },
+  {
+    "file": "mag-in.ogg",
+    "source": "impactMetal_medium_001.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.16,
+    "targetPeak": 0.7
+  },
+  {
+    "file": "bolt.ogg",
+    "source": "impactMetal_light_002.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.16,
+    "targetPeak": 0.7
+  },
+  {
+    "file": "metal.ogg",
+    "source": "impactMetal_medium_003.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.24,
+    "targetPeak": 0.7
+  },
+  {
+    "file": "slap.ogg",
+    "source": "impactPunch_heavy_001.ogg",
+    "folder": "Audio",
+    "onset": 0.016161,
+    "duration": 0.2,
+    "targetPeak": 0.7
+  },
+  {
+    "file": "debris.ogg",
+    "source": "impactGeneric_light_002.ogg",
+    "folder": "Audio",
+    "onset": 0,
+    "duration": 0.2,
+    "targetPeak": 0.7
+  }
+]

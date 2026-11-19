@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIMBIOSE</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <div id="hud">
+      <div id="crosshair"></div>
+      <div id="hitmarker"></div>
+      <div id="hack-ring"></div>
+      <div id="hack-label">SEGURE <b>E</b> PARA HACKEAR</div>
+      <div id="allies"><span class="slot"></span><span class="slot"></span><span class="slot"></span><em>ESQUADRÃO</em></div>
+      <div id="score">DRONES: <span id="score-value">0</span></div>
+      <div id="wave">ONDA <span id="wave-value">0</span></div>
+      <div id="hp"><div id="hp-fill"></div><span>VIDA</span></div>
+      <div id="boss"><div id="boss-label">GERENTE DE FELICIDADE</div><div id="boss-track"><div id="boss-fill"></div></div></div>
+      <div id="subtitle"></div>
+      <div id="banner">
+        <div id="banner-title"></div>
+        <div id="banner-line"></div>
+      </div>
+    </div>
+    <div id="speedlines"></div>
+    <div id="fx-layer"></div>
+    <div id="damage"></div>
+    <div id="impact-frame"></div>
+
+    <div id="death">
+      <h2>VOCÊ FOI OTIMIZADO :)</h2>
+      <p id="death-stats"></p>
+      <p class="hint">Índice de Felicidade Bruta: +0,0001%. Obrigada pela colaboração!</p>
+      <p class="hint">CLIQUE PARA RESISTIR DE NOVO</p>
+    </div>
+
+    <!-- Menu inicial: montado por src/game/menu/menu.ts -->
+    <div id="menu"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

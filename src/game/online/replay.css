@@ -1,0 +1,234 @@
+/* Killcam e Jogada da Partida. Cores só da paleta (variáveis de src/style.css). */
+
+/* Durante um replay o HUD do jogo some (o replay tem a própria moldura) */
+body.replay-on .chud,
+body.replay-on #crosshair,
+body.replay-on .weapon-spread,
+body.replay-on .weapon-reflex:not(.replay-reflex),
+body.replay-on .weapon-scope:not(.replay-scope),
+body.replay-on .weapon-slots,
+body.replay-on .arsenal-toggle,
+body.replay-on .online-connection { visibility: hidden !important; }
+
+.rp {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: none;
+  pointer-events: none;
+  color: var(--paper);
+  font-family: var(--f-display);
+  overflow: hidden;
+}
+.rp.show { display: block; }
+.rp .outline { -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; }
+
+/* Faixas de cinema + cantos de câmera */
+.rp-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 9vh;
+  background: var(--ink);
+  transition: height 0.25s ease-out;
+}
+.rp-bar.top { top: 0; }
+.rp-bar.bottom { bottom: 0; }
+.rp.slow .rp-bar { height: 12vh; }
+.rp-corner {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border: 0 solid var(--paper);
+  opacity: 0.85;
+}
+.rp-corner.tl { top: calc(9vh + 14px); left: 18px; border-top-width: 4px; border-left-width: 4px; }
+.rp-corner.tr { top: calc(9vh + 14px); right: 18px; border-top-width: 4px; border-right-width: 4px; }
+.rp-corner.bl { bottom: calc(9vh + 14px); left: 18px; border-bottom-width: 4px; border-left-width: 4px; }
+.rp-corner.br { bottom: calc(9vh + 14px); right: 18px; border-bottom-width: 4px; border-right-width: 4px; }
+
+/* Vinheta e linhas de velocidade na câmera lenta */
+.rp-vignette {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(244, 236, 255, 0.07) 0deg 1.2deg, transparent 1.2deg 7deg),
+    radial-gradient(ellipse at center, transparent 38%, rgba(26, 16, 38, 0.75) 100%);
+  -webkit-mask: radial-gradient(ellipse at center, transparent 30%, #000 75%);
+  mask: radial-gradient(ellipse at center, transparent 30%, #000 75%);
+}
+.rp.slow .rp-vignette { opacity: 1; }
+
+/* Selo (KILLCAM / JOGADA DA PARTIDA) */
+.rp-stamp {
+  position: absolute;
+  top: calc(9vh + 26px);
+  left: 34px;
+  padding: 6px 16px 4px;
+  font-size: clamp(20px, 3.2vh, 34px);
+  letter-spacing: 2px;
+  color: var(--ink);
+  background: var(--pink);
+  border: 4px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  transform: rotate(-4deg) skewX(-8deg);
+  animation: rp-stamp 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+.rp.highlight .rp-stamp { background: var(--yellow); }
+.rp-stamp .rec {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+  vertical-align: 0.05em;
+  animation: rp-blink 0.8s steps(2) infinite;
+}
+.rp-speed {
+  position: absolute;
+  top: calc(9vh + 30px);
+  right: 34px;
+  font-size: clamp(16px, 2.4vh, 24px);
+  color: var(--yellow);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.rp.slow .rp-speed { opacity: 1; }
+
+/* Faixa de baixo: quem matou / título da jogada */
+.rp-band {
+  position: absolute;
+  left: 50%;
+  bottom: calc(9vh + 22px);
+  transform: translateX(-50%) skewX(-10deg);
+  max-width: calc(100% - 32px);
+  padding: 10px 28px 8px;
+  background: var(--ink);
+  border-left: 8px solid var(--pink);
+  border-right: 8px solid var(--pink);
+  text-align: center;
+  white-space: nowrap;
+  animation: rp-band 0.3s ease-out both;
+}
+.rp.highlight .rp-band { border-color: var(--yellow); }
+.rp-band .t { display: block; font-size: clamp(18px, 3vh, 32px); letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; }
+.rp-band .t b { color: var(--pink); }
+.rp.highlight .rp-band .t b { color: var(--yellow); }
+.rp-band .s { display: block; margin-top: 2px; font: 700 clamp(15px, 2vh, 19px) var(--f-ui); color: var(--cyan); }
+.rp-reasons { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px; white-space: normal; }
+.rp-reasons span {
+  padding: 2px 8px;
+  font: 800 clamp(14px, 1.8vh, 17px) var(--f-ui);
+  color: var(--ink);
+  background: var(--cyan);
+  animation: rp-chip 0.3s ease-out both;
+}
+.rp-hint {
+  position: absolute;
+  right: 22px;
+  bottom: calc(9vh - 30px);
+  font: 700 16px var(--f-ui);
+  color: var(--paper);
+  opacity: 0.8;
+}
+.rp-hint kbd { padding: 0 6px; border: 2px solid var(--paper); border-radius: 3px; font: inherit; }
+
+/* Onomatopeia do tiro final */
+.rp-pop {
+  position: absolute;
+  left: 16%;
+  top: 38%;
+  max-width: 24vw;
+  overflow-wrap: anywhere;
+  display: none;
+  transform: translate(-50%, -50%) rotate(0deg);
+  text-align: center;
+}
+.rp-pop.show { display: block; animation: rp-pop 0.55s ease-out both; }
+.rp-pop .big {
+  display: block;
+  font-size: clamp(24px, 4.5vw, 64px);
+  line-height: 0.9;
+  color: var(--yellow);
+  -webkit-text-stroke: 5px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 3px 3px 0 var(--pink);
+}
+.rp-pop .jp { display: block; margin-top: 4px; font-size: clamp(14px, 2vw, 24px); color: var(--paper); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+.rp-pop .sub { display: inline-block; margin-top: 8px; padding: 2px 6px; font-size: clamp(12px, 1.4vw, 18px); color: var(--ink); background: var(--pink); }
+
+/* Contador de abates da Jogada */
+.rp-count {
+  position: absolute;
+  right: 36px;
+  top: 40%;
+  font-size: clamp(56px, 11vh, 120px);
+  color: var(--yellow);
+  -webkit-text-stroke: 4px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0 var(--pink);
+}
+.rp-count.bump { animation: rp-count 0.4s cubic-bezier(0.2, 1.8, 0.4, 1); }
+.rp-count small { display: block; font-size: 0.22em; text-align: right; -webkit-text-stroke: 1.5px var(--ink); text-shadow: none; color: var(--paper); }
+
+/* Abertura da Jogada (enquanto o fim da partida termina de gravar) */
+.rp-intro {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(26, 16, 38, 0.55);
+}
+.rp.intro .rp-intro { display: flex; }
+.rp.intro > :not(.rp-intro):not(.rp-bar) { display: none; }
+.rp-intro .k { font-size: clamp(20px, 3vh, 30px); color: var(--cyan); letter-spacing: 6px; animation: rp-band 0.3s ease-out both; }
+.rp-intro .h {
+  font-size: clamp(44px, 9vh, 104px);
+  color: var(--yellow);
+  -webkit-text-stroke: 4px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 7px 7px 0 var(--pink);
+  transform: rotate(-3deg);
+  animation: rp-stamp 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+/* Salvar clipe (na tela de fim) */
+.rp-save {
+  position: fixed;
+  right: 18px;
+  bottom: 46px;
+  z-index: 7;
+  display: none;
+  padding: 10px 18px;
+  font: 900 18px var(--f-ui);
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: var(--cyan);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.rp-save.show { display: block; animation: rp-chip 0.3s ease-out both; }
+.rp-save:hover, .rp-save:focus-visible { background: var(--yellow); outline: none; }
+.rp-save[disabled] { opacity: 0.6; cursor: progress; }
+
+@keyframes rp-stamp { from { opacity: 0; transform: rotate(-4deg) skewX(-8deg) scale(2.2); } }
+@keyframes rp-band { from { opacity: 0; transform: translateX(-50%) skewX(-10deg) translateY(30px); } }
+@keyframes rp-chip { from { opacity: 0; transform: translateY(8px); } }
+@keyframes rp-blink { 50% { opacity: 0; } }
+@keyframes rp-count { from { transform: scale(1.8) rotate(8deg); } }
+@keyframes rp-pop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.75); }
+  20% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+  70% { opacity: 0.75; }
+  100% { opacity: 0; transform: translate(-50%, -60%) scale(0.95); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp *, .rp-save { animation: none !important; transition: none !important; }
+}

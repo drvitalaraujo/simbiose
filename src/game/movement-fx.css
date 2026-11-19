@@ -1,0 +1,24 @@
+/* Linhas de velocidade do movimento (movement-fx.ts): slide, queda rápida e corrida. */
+.movement-lines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.movement-lines canvas {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  opacity: 0;
+}
+
+.movement-lines canvas.on {
+  opacity: 1;
+}
+
+body.replay-on .movement-lines {
+  display: none;
+}

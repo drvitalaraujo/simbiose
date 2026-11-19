@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+docs
+public
+deploy
+.env
+.env.*
+*.md
